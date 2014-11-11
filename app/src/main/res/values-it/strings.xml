@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="action_settings">Impostazioni</string>
+    <string name="addToggle">Aggiungi</string>
+    <string name="app_name">Conta Persone</string>
+    <string name="resetToggle">Azzera</string>
+    <string name="subtractToggle">Sottrai</string>
+    <string name="preference_count_description">Aumenta/diminuisce il conteggio in base all\'impostazione</string>
+
+</resources>
