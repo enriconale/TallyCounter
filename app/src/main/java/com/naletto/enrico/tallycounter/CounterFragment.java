@@ -1,7 +1,6 @@
 package com.naletto.enrico.tallycounter;
 
 import android.app.Fragment;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +66,7 @@ public class CounterFragment extends Fragment {
         counterView.setText(counter.toString());
 
         addToggle = (ImageButton)v.findViewById(R.id.button1);
-        //addToggle.getBackground().setColorFilter(0xFF00FF00, PorterDuff.Mode.MULTIPLY);
+        //addToggle.getBackground().setColorFilter(0x61616161, PorterDuff.Mode.MULTIPLY);
         addToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +77,7 @@ public class CounterFragment extends Fragment {
         });
 
         subtractToggle = (ImageButton)v.findViewById(R.id.button2);
-        //subtractToggle.getBackground().setColorFilter(0xFF00FF00, PorterDuff.Mode.MULTIPLY);
+        //subtractToggle.getBackground().setColorFilter(0x61616161, PorterDuff.Mode.MULTIPLY);
         subtractToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
