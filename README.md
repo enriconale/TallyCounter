@@ -1,6 +1,8 @@
 TallyCounter
 ============
 
+***ONLY COMPATIBLE WITH ANDROID 5.0 LOLLIPOP***
+
 A simple Android application that represents tally counter, used mainly for understanding git and GitHub.
 
 The MIT License (MIT)
