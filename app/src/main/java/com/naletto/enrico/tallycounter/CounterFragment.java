@@ -1,8 +1,12 @@
 package com.naletto.enrico.tallycounter;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +20,7 @@ import android.widget.TextView;
 
 public class CounterFragment extends Fragment {
 
-    private TallyCounter counter = new TallyCounter();
+    private TallyCounter counter;
     private TextView counterView;
     private ImageButton addToggle;
     private ImageButton subtractToggle;
@@ -30,6 +34,10 @@ public class CounterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int step = Integer.parseInt(sharedPref.getString("pref_step", "1"));
+        counter = new TallyCounter(0, step);
     }
 
     @Override

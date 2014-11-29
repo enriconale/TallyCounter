@@ -50,7 +50,7 @@ public class TallyCounter {
      * @throws IllegalArgumentException if the step is less than 0
      */
     public void setStep(int step) throws IllegalArgumentException {
-        if (step < 0)
+        if (step <= 0)
             throw new IllegalArgumentException();
         this.step = step;
     }

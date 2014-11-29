@@ -2,10 +2,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <EditTextPreference
-        android:key="pref_count"
+        android:key="pref_step"
         android:title="@string/preference_count"
         android:summary="@string/preference_count_description"
-        android:defaultValue="1"/>
+        android:numeric="integer"
+        android:defaultValue="1"
+        android:persistent="true"/>
 
 
 </PreferenceScreen>
