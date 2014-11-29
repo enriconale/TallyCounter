@@ -16,9 +16,9 @@ public class TallyCounter {
         this.step = 1;
     }
 
-    public TallyCounter(int savedCount, int savedStep) {
-        this.count = savedCount;
-        this.step = savedStep;
+    public TallyCounter(int count, int step) {
+        this.count = count;
+        this.step = step;
     }
 
     /**
