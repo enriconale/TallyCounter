@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 
 public class SettingsActivity extends Activity {
+    public static final String PREF_STEP = "pref_step";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

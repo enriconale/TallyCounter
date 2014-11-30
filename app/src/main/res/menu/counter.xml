@@ -5,7 +5,8 @@
     <item
         android:id="@+id/action_reset"
         android:title="@string/resetToggle"
-        android:showAsAction="never" />
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/action_reset"/>
 
     <item
         android:id="@+id/action_settings"

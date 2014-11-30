@@ -24,6 +24,7 @@ public class CounterFragment extends Fragment {
     private TextView counterView;
     private ImageButton addToggle;
     private ImageButton subtractToggle;
+    private SharedPreferences sharedPref;
 
     public CounterFragment() {
         // Required empty public constructor
@@ -35,7 +36,7 @@ public class CounterFragment extends Fragment {
         setHasOptionsMenu(true);
         setRetainInstance(true);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int step = Integer.parseInt(sharedPref.getString("pref_step", "1"));
         counter = new TallyCounter(0, step);
     }
@@ -100,5 +101,4 @@ public class CounterFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }
