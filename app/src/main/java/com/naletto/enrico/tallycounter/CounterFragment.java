@@ -101,4 +101,13 @@ public class CounterFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int step = Integer.parseInt(sharedPref.getString("pref_step", "1"));
+        counter = new TallyCounter(counter.getCount(), step);
+    }
 }
