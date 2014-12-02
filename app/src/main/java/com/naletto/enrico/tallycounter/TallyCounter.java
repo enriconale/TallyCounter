@@ -7,33 +7,33 @@ package com.naletto.enrico.tallycounter;
  */
 public class TallyCounter {
     //Private variables
-    private int count;
-    private int step;
+    private int mCount;
+    private int mStep;
 
     //Public constructors
     public TallyCounter() {
-        this.count = 0;
-        this.step = 1;
+        mCount = 0;
+        mStep = 1;
     }
 
     public TallyCounter(int count, int step) {
-        this.count = count;
-        this.step = step;
+        mCount = count;
+        mStep = step;
     }
 
     /**
      * Increments the count of the tally counter, based on a step.
      */
     public void increment() {
-        count += step;
+        mCount += mStep;
     }
 
     /**
      * Decrements the count of the tally counter, if the count is greater than the step.
      */
     public void decrement() {
-        if (this.count >= this.step)
-            this.count -= this.step;
+        if (mCount >= mStep)
+            mCount -= mStep;
     }
 
     /**
@@ -41,7 +41,7 @@ public class TallyCounter {
      * @return the count of the tally counter
      */
     public int getCount() {
-        return this.count;
+        return mCount;
     }
 
     /**
@@ -52,14 +52,14 @@ public class TallyCounter {
     public void setStep(int step) throws IllegalArgumentException {
         if (step <= 0)
             throw new IllegalArgumentException();
-        this.step = step;
+        mStep = step;
     }
 
     /**
      * Reset the count to 0
      */
     public void reset() {
-        this.count = 0;
+        mCount = 0;
     }
 
     /**
@@ -68,7 +68,7 @@ public class TallyCounter {
      */
     @Override
     public String toString() {
-        return Integer.toString(this.count);
+        return Integer.toString(mCount);
     }
 
 }

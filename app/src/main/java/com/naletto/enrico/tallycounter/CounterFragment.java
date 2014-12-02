@@ -20,11 +20,11 @@ import android.widget.TextView;
 
 public class CounterFragment extends Fragment {
 
-    private TallyCounter counter;
-    private TextView counterView;
-    private ImageButton addToggle;
-    private ImageButton subtractToggle;
-    private SharedPreferences sharedPref;
+    private TallyCounter mCounter;
+    private TextView mCounterView;
+    private ImageButton mAddToggle;
+    private ImageButton mSubtractToggle;
+    private SharedPreferences mSharedPref;
 
     public CounterFragment() {
         // Required empty public constructor
@@ -36,9 +36,9 @@ public class CounterFragment extends Fragment {
         setHasOptionsMenu(true);
         setRetainInstance(true);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int step = Integer.parseInt(sharedPref.getString("pref_step", "1"));
-        counter = new TallyCounter(0, step);
+        mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int step = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
+        mCounter = new TallyCounter(0, step);
     }
 
     @Override
@@ -46,28 +46,28 @@ public class CounterFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_counter, container, false);
 
-        counterView = (TextView)v.findViewById(R.id.textView);
-        counterView.setText(counter.toString());
+        mCounterView = (TextView)v.findViewById(R.id.textView);
+        mCounterView.setText(mCounter.toString());
 
-        addToggle = (ImageButton)v.findViewById(R.id.button1);
+        mAddToggle = (ImageButton)v.findViewById(R.id.button1);
         //addToggle.getBackground().setColorFilter(0x61616161, PorterDuff.Mode.MULTIPLY);
-        addToggle.setOnClickListener(new View.OnClickListener() {
+        mAddToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                counter.increment();
-                counterView.setText(counter.toString());
-                subtractToggle.setEnabled(counter.getCount() != 0);
+                mCounter.increment();
+                mCounterView.setText(mCounter.toString());
+                mSubtractToggle.setEnabled(mCounter.getCount() != 0);
             }
         });
 
-        subtractToggle = (ImageButton)v.findViewById(R.id.button2);
+        mSubtractToggle = (ImageButton)v.findViewById(R.id.button2);
         //subtractToggle.getBackground().setColorFilter(0x61616161, PorterDuff.Mode.MULTIPLY);
-        subtractToggle.setOnClickListener(new View.OnClickListener() {
+        mSubtractToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                counter.decrement();
-                counterView.setText(counter.toString());
-                subtractToggle.setEnabled(counter.getCount() != 0);
+                mCounter.decrement();
+                mCounterView.setText(mCounter.toString());
+                mSubtractToggle.setEnabled(mCounter.getCount() != 0);
             }
         });
 
@@ -75,9 +75,9 @@ public class CounterFragment extends Fragment {
     }
 
     public void resetView() {
-        counter.reset();
-        counterView.setText(counter.toString());
-        subtractToggle.setEnabled(counter.getCount() != 0);
+        mCounter.reset();
+        mCounterView.setText(mCounter.toString());
+        mSubtractToggle.setEnabled(mCounter.getCount() != 0);
     }
 
     @Override
@@ -106,8 +106,8 @@ public class CounterFragment extends Fragment {
     public void onResume() {
         super.onResume();
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int step = Integer.parseInt(sharedPref.getString("pref_step", "1"));
-        counter = new TallyCounter(counter.getCount(), step);
+        mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int step = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
+        mCounter.setStep(step);
     }
 }
