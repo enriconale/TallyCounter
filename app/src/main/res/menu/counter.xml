@@ -9,6 +9,12 @@
         android:icon="@drawable/action_reset"/>
 
     <item
+        android:id="@+id/action_lock_buttons"
+        android:title="@string/action_lock_buttons"
+        android:showAsAction="never"
+        android:icon="@drawable/ic_action_action_lock_open"/>
+
+    <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

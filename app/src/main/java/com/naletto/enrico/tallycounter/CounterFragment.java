@@ -34,6 +34,8 @@ public class CounterFragment extends Fragment {
     private ImageButton mAddToggle;
     private ImageButton mSubtractToggle;
     private SharedPreferences mSharedPref;
+    private boolean mVolumeButtonsActivated;
+    private boolean mSwButtonsActivated = true;
 
     public CounterFragment() {
         // Required empty public constructor
@@ -47,6 +49,7 @@ public class CounterFragment extends Fragment {
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int step = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
+        mVolumeButtonsActivated = mSharedPref.getBoolean("pref_volume_buttons", false);
         mCounter = new TallyCounter(loadTally(), step);
     }
 
@@ -106,6 +109,25 @@ public class CounterFragment extends Fragment {
                 Intent i = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(i);
                 return true;
+            case R.id.action_lock_buttons:
+                if (mSwButtonsActivated) {
+                    Toast.makeText(getActivity(), R.string.sw_buttons_disabled,
+                            Toast.LENGTH_SHORT).show();
+                    item.setIcon(R.drawable.ic_action_action_lock_outline);
+                    item.setTitle(R.string.action_unlock_buttons);
+                    mSwButtonsActivated = !mSwButtonsActivated;
+                    mAddToggle.setEnabled(mSwButtonsActivated);
+                    mSubtractToggle.setEnabled(mSwButtonsActivated);
+
+                } else {
+                    Toast.makeText(getActivity(), R.string.sw_buttons_enabled,
+                            Toast.LENGTH_SHORT).show();
+                    item.setIcon(R.drawable.ic_action_action_lock_open);
+                    item.setTitle(R.string.action_lock_buttons);
+                    mSwButtonsActivated = !mSwButtonsActivated;
+                    mAddToggle.setEnabled(mSwButtonsActivated);
+                    mSubtractToggle.setEnabled(mSwButtonsActivated);
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -117,6 +139,8 @@ public class CounterFragment extends Fragment {
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int step = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
+        mVolumeButtonsActivated = mSharedPref.getBoolean
+                ("pref_volume_buttons", false);
         mCounter.setStep(step);
     }
 
@@ -126,7 +150,7 @@ public class CounterFragment extends Fragment {
         try {
             saveTally();
         } catch (Exception e) {
-            Toast.makeText(getActivity(), "Unable to save the counter.", Toast.LENGTH_SHORT);
+            Toast.makeText(getActivity(), R.string.save_error, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -160,14 +184,22 @@ public class CounterFragment extends Fragment {
     }
 
     public void incrementCounter() {
-        mCounter.increment();
-        mCounterView.setText(mCounter.toString());
-        mSubtractToggle.setEnabled(mCounter.canDecrease());
+        if (mVolumeButtonsActivated) {
+            mCounter.increment();
+            mCounterView.setText(mCounter.toString());
+            mSubtractToggle.setEnabled(mCounter.canDecrease());
+        } else {
+
+        }
     }
 
     public void decrementCounter() {
-        mCounter.decrement();
-        mCounterView.setText(mCounter.toString());
-        mSubtractToggle.setEnabled(mCounter.canDecrease());
+        if (mVolumeButtonsActivated) {
+            mCounter.decrement();
+            mCounterView.setText(mCounter.toString());
+            mSubtractToggle.setEnabled(mCounter.canDecrease());
+        } else {
+
+        }
     }
 }

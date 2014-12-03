@@ -5,6 +5,14 @@
     <string name="app_name">Conta Persone</string>
     <string name="resetToggle">Azzera</string>
     <string name="subtractToggle">Sottrai</string>
-    <string name="preference_count_description">Aumenta/diminuisce il conteggio in base all\'impostazione</string>
+    <string name="preference_count_description">Incrementa/diminuisce il conteggio in base all\'impostazione</string>
+    <string name="action_lock_buttons">Disabilita pulsanti software</string>
+    <string name="action_unlock_buttons">Abilita pulsanti software</string>
+    <string name="preference_count">Incremento</string>
+    <string name="preference_volume_buttons">Pulsanti del volume</string>
+    <string name="preference_volume_buttons_description">Possibilità di usare i pulsanti del volume per gestire il conta persone.</string>
+    <string name="save_error">Impossibile salvare il file.</string>
+    <string name="sw_buttons_disabled">I pulsanti software ora sono disabilitati.</string>
+    <string name="sw_buttons_enabled">I pulsanti software ora sono abilitati.</string>
 
 </resources>
