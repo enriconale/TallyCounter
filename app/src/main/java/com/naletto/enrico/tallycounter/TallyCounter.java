@@ -1,11 +1,17 @@
 package com.naletto.enrico.tallycounter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * @author Enrico Naletto
  * A simple tally counter class, that increments and decrements the count based on a step,
  * editable by the user.
  */
 public class TallyCounter {
+
+    private static final String JSON_COUNT = "count";
+
     //Private variables
     private int mCount;
     private int mStep;
@@ -56,6 +62,15 @@ public class TallyCounter {
     }
 
     /**
+     * Verifies if the count of the tally counter can decrease
+     * @return True if the count of the tally counter can decrease with the current step, false
+     * otherwise
+     */
+    public boolean canDecrease() {
+        return (mCount >= mStep);
+    }
+
+    /**
      * Reset the count to 0
      */
     public void reset() {
@@ -69,6 +84,17 @@ public class TallyCounter {
     @Override
     public String toString() {
         return Integer.toString(mCount);
+    }
+
+    /**
+     * Parses the tally counter object to a JSON Object
+     * @return the JSON file that contains the count
+     * @throws JSONException
+     */
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(JSON_COUNT, mCount);
+        return json;
     }
 
 }

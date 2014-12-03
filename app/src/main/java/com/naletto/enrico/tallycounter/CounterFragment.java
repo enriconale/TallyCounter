@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,10 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 
 public class CounterFragment extends Fragment {
+
+    private static final String FILENAME = "tally.json";
 
     private TallyCounter mCounter;
     private TextView mCounterView;
@@ -38,7 +47,7 @@ public class CounterFragment extends Fragment {
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int step = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
-        mCounter = new TallyCounter(0, step);
+        mCounter = new TallyCounter(loadTally(), step);
     }
 
     @Override
@@ -56,7 +65,7 @@ public class CounterFragment extends Fragment {
             public void onClick(View v) {
                 mCounter.increment();
                 mCounterView.setText(mCounter.toString());
-                mSubtractToggle.setEnabled(mCounter.getCount() != 0);
+                mSubtractToggle.setEnabled(mCounter.canDecrease());
             }
         });
 
@@ -67,7 +76,7 @@ public class CounterFragment extends Fragment {
             public void onClick(View v) {
                 mCounter.decrement();
                 mCounterView.setText(mCounter.toString());
-                mSubtractToggle.setEnabled(mCounter.getCount() != 0);
+                mSubtractToggle.setEnabled(mCounter.canDecrease());
             }
         });
 
@@ -77,7 +86,7 @@ public class CounterFragment extends Fragment {
     public void resetView() {
         mCounter.reset();
         mCounterView.setText(mCounter.toString());
-        mSubtractToggle.setEnabled(mCounter.getCount() != 0);
+        mSubtractToggle.setEnabled(mCounter.canDecrease());
     }
 
     @Override
@@ -109,5 +118,56 @@ public class CounterFragment extends Fragment {
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int step = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
         mCounter.setStep(step);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            saveTally();
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "Unable to save the counter.", Toast.LENGTH_SHORT);
+        }
+    }
+
+    private void saveTally() throws JSONException, IOException {
+        Writer writer = null;
+        try {
+            JSONObject json = mCounter.toJSON();
+            OutputStream out = getActivity().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            writer = new OutputStreamWriter(out);
+            writer.write(json.toString());
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
+    }
+
+    private int loadTally() {
+        int tmpCount = 0;
+        try {
+            JsonReader jsonReader = new JsonReader(new InputStreamReader(getActivity()
+                    .openFileInput(FILENAME)));
+            jsonReader.beginObject();
+            if (jsonReader.nextName().equals("count")) {
+                tmpCount = jsonReader.nextInt();
+            }
+        } catch (Exception e) {
+            return 0;
+        }
+        return tmpCount;
+    }
+
+    public void incrementCounter() {
+        mCounter.increment();
+        mCounterView.setText(mCounter.toString());
+        mSubtractToggle.setEnabled(mCounter.canDecrease());
+    }
+
+    public void decrementCounter() {
+        mCounter.decrement();
+        mCounterView.setText(mCounter.toString());
+        mSubtractToggle.setEnabled(mCounter.canDecrease());
     }
 }
