@@ -16,12 +16,6 @@ public class TallyCounter {
     private int mCount;
     private int mStep;
 
-    //Public constructors
-    public TallyCounter() {
-        mCount = 0;
-        mStep = 1;
-    }
-
     public TallyCounter(int count, int step) {
         mCount = count;
         mStep = step;
