@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.JsonReader;
 import android.view.LayoutInflater;
@@ -39,7 +38,7 @@ public class CounterFragment extends Fragment {
     private boolean mScreenAlwaysOn;
     private boolean mVolumeButtonsActivated;
     private boolean mSwButtonsActivated;
-    protected PowerManager.WakeLock mWakeLock;
+    private int mStep;
 
     public CounterFragment() {
         // Required empty public constructor
@@ -52,10 +51,16 @@ public class CounterFragment extends Fragment {
         setRetainInstance(true);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int step = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
+        try {
+            mStep = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
+        } catch (Exception e) {
+            mStep = 1;
+            Toast.makeText(getActivity().getApplicationContext(), "Invalid value of step.",
+                    Toast.LENGTH_LONG).show();
+        }
         mScreenAlwaysOn = mSharedPref.getBoolean("pref_screen_dim", false);
         mVolumeButtonsActivated = mSharedPref.getBoolean("pref_volume_buttons", false);
-        mCounter = new TallyCounter(loadTally(), step);
+        mCounter = new TallyCounter(loadTally(), mStep);
         mSwButtonsActivated = true;
         if (mScreenAlwaysOn) {
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -147,7 +152,13 @@ public class CounterFragment extends Fragment {
         super.onResume();
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int step = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
+        try {
+            mStep = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
+        } catch (Exception e) {
+            mStep = 1;
+            Toast.makeText(getActivity().getApplicationContext(), "Invalid value of step.",
+                    Toast.LENGTH_LONG).show();
+        }
         mScreenAlwaysOn = mSharedPref.getBoolean("pref_screen_dim", false);
         mVolumeButtonsActivated = mSharedPref.getBoolean
                 ("pref_volume_buttons", false);
@@ -156,7 +167,7 @@ public class CounterFragment extends Fragment {
         } else {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-        mCounter.setStep(step);
+        mCounter.setStep(mStep);
     }
 
     @Override
