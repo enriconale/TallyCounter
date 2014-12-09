@@ -14,5 +14,7 @@
     <string name="save_error">Impossibile salvare il file.</string>
     <string name="sw_buttons_disabled">I pulsanti software ora sono disabilitati.</string>
     <string name="sw_buttons_enabled">I pulsanti software ora sono abilitati.</string>
+    <string name="preference_screen_dim">Schermo sempre acceso.</string>
+    <string name="preference_screen_dim_description">Decidi se lo schermo può spegnersi o no.</string>
 
 </resources>

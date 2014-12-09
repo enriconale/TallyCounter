@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.JsonReader;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +36,10 @@ public class CounterFragment extends Fragment {
     private ImageButton mAddToggle;
     private ImageButton mSubtractToggle;
     private SharedPreferences mSharedPref;
+    private boolean mScreenAlwaysOn;
     private boolean mVolumeButtonsActivated;
-    private boolean mSwButtonsActivated = true;
+    private boolean mSwButtonsActivated;
+    protected PowerManager.WakeLock mWakeLock;
 
     public CounterFragment() {
         // Required empty public constructor
@@ -49,8 +53,13 @@ public class CounterFragment extends Fragment {
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int step = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
+        mScreenAlwaysOn = mSharedPref.getBoolean("pref_screen_dim", false);
         mVolumeButtonsActivated = mSharedPref.getBoolean("pref_volume_buttons", false);
         mCounter = new TallyCounter(loadTally(), step);
+        mSwButtonsActivated = true;
+        if (mScreenAlwaysOn) {
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
     }
 
     @Override
@@ -116,8 +125,8 @@ public class CounterFragment extends Fragment {
                     item.setIcon(R.drawable.ic_action_action_lock_outline);
                     item.setTitle(R.string.action_unlock_buttons);
                     mSwButtonsActivated = !mSwButtonsActivated;
-                    mAddToggle.setEnabled(mSwButtonsActivated);
-                    mSubtractToggle.setEnabled(mSwButtonsActivated);
+                    mAddToggle.setVisibility(View.GONE);
+                    mSubtractToggle.setVisibility(View.GONE);
 
                 } else {
                     Toast.makeText(getActivity(), R.string.sw_buttons_enabled,
@@ -125,8 +134,8 @@ public class CounterFragment extends Fragment {
                     item.setIcon(R.drawable.ic_action_action_lock_open);
                     item.setTitle(R.string.action_lock_buttons);
                     mSwButtonsActivated = !mSwButtonsActivated;
-                    mAddToggle.setEnabled(mSwButtonsActivated);
-                    mSubtractToggle.setEnabled(mSwButtonsActivated);
+                    mAddToggle.setVisibility(View.VISIBLE);
+                    mSubtractToggle.setVisibility(View.VISIBLE);
                 }
             default:
                 return super.onOptionsItemSelected(item);
@@ -139,8 +148,14 @@ public class CounterFragment extends Fragment {
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int step = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
+        mScreenAlwaysOn = mSharedPref.getBoolean("pref_screen_dim", false);
         mVolumeButtonsActivated = mSharedPref.getBoolean
                 ("pref_volume_buttons", false);
+        if (mScreenAlwaysOn) {
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
         mCounter.setStep(step);
     }
 

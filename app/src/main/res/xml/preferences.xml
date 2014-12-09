@@ -16,5 +16,12 @@
         android:defaultValue="false"
         android:persistent="true" />
 
+    <CheckBoxPreference
+        android:key="pref_screen_dim"
+        android:title="@string/preference_screen_dim"
+        android:summary="@string/preference_screen_dim_description"
+        android:defaultValue="false"
+        android:persistent="true"/>
+
 
 </PreferenceScreen>

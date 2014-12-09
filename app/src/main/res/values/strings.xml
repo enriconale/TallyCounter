@@ -14,6 +14,8 @@
     <string name="preference_volume_buttons">Volume Buttons</string>
     <string name="preference_volume_buttons_description">Ability to use the volume buttons
         to increase or decrease the count.</string>
+    <string name="preference_screen_dim">Screen Always On</string>
+    <string name="preference_screen_dim_description">Decide if the screen can dim or not.</string>
     <string name="save_error">Unable to save the file.</string>
     <string name="sw_buttons_disabled">Software buttons are now disabled.</string>
     <string name="sw_buttons_enabled">Software buttons are now enabled.</string>
