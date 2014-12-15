@@ -5,7 +5,7 @@
     <string name="app_name">Conta Persone</string>
     <string name="resetToggle">Azzera</string>
     <string name="subtractToggle">Sottrai</string>
-    <string name="preference_count_description">Incrementa/diminuisce il conteggio in base all\'impostazione</string>
+    <string name="preference_count_description">Incrementa/diminuisce il conteggio in base all\'impostazione.</string>
     <string name="action_lock_buttons">Disabilita pulsanti software</string>
     <string name="action_unlock_buttons">Abilita pulsanti software</string>
     <string name="preference_count">Incremento</string>
@@ -16,5 +16,7 @@
     <string name="sw_buttons_enabled">I pulsanti software ora sono abilitati.</string>
     <string name="preference_screen_dim">Schermo sempre acceso.</string>
     <string name="preference_screen_dim_description">Decidi se lo schermo può spegnersi o no.</string>
+    <string name="step_over_limit">Lo step è oltre il limite di dieci milioni.\nOra è impostato a 1.</string>
+    <string name="step_overflow">Il valore dello step è troppo grande.\nOra è impostato a 1.</string>
 
 </resources>

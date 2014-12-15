@@ -19,28 +19,27 @@
         android:layout_centerHorizontal="true" />
 
     <ImageButton
-        android:layout_width="fill_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/addToggle"
         android:id="@+id/button1"
-        android:src="@drawable/up"
+        android:src="@drawable/chevron_up"
         android:contentDescription="@string/addToggle"
+        android:padding="8dp"
         android:layout_above="@+id/button2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:padding="16dp" />
+        android:layout_centerHorizontal="true"
+         />
 
     <ImageButton
-        android:layout_width="fill_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/resetToggle"
         android:id="@+id/button2"
-        android:src="@drawable/down"
+        android:src="@drawable/chevron_down"
         android:contentDescription="@string/subtractToggle"
-        android:padding="16dp"
+        android:padding="8dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />
 
 </RelativeLayout>

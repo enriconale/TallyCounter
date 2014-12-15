@@ -10,7 +10,8 @@ import org.json.JSONObject;
  */
 public class TallyCounter {
 
-    private static final String JSON_COUNT = "count";
+    private final String JSON_COUNT = "count";
+    private final int MAX_VALUE = 10000000;
 
     //Private variables
     private int mCount;
@@ -24,16 +25,24 @@ public class TallyCounter {
     /**
      * Increments the count of the tally counter, based on a step.
      */
-    public void increment() {
-        mCount += mStep;
+    public boolean increment() {
+        if (canIncrease()) {
+            mCount += mStep;
+            return true;
+        }
+        return false;
     }
 
     /**
      * Decrements the count of the tally counter, if the count is greater than the step.
      */
-    public void decrement() {
-        if (mCount >= mStep)
+    public boolean decrement() {
+        if (canDecrease()) {
             mCount -= mStep;
+            return true;
+        }
+        return false;
+
     }
 
     /**
@@ -53,15 +62,6 @@ public class TallyCounter {
         if (step <= 0)
             throw new IllegalArgumentException();
         mStep = step;
-    }
-
-    /**
-     * Verifies if the count of the tally counter can decrease
-     * @return True if the count of the tally counter can decrease with the current step, false
-     * otherwise
-     */
-    public boolean canDecrease() {
-        return (mCount >= mStep);
     }
 
     /**
@@ -89,6 +89,24 @@ public class TallyCounter {
         JSONObject json = new JSONObject();
         json.put(JSON_COUNT, mCount);
         return json;
+    }
+
+    /**
+     * Verifies if the count of the tally counter can decrease
+     * @return True if the count of the tally counter can decrease with the current step, false
+     * otherwise
+     */
+    public boolean canDecrease() {
+        return (mCount >= mStep);
+    }
+
+    /**
+     * Verifies if the count of the tally counter can increase
+     * @return True if the count of the tally counter can increase with the current step, false
+     * otherwise
+     */
+    public boolean canIncrease() {
+        return ((mCount + mStep) <= MAX_VALUE);
     }
 
 }

@@ -29,6 +29,7 @@ import java.io.Writer;
 public class CounterFragment extends Fragment {
 
     private static final String FILENAME = "tally.json";
+    private final int MAX_VALUE = 10000000;
 
     private TallyCounter mCounter;
     private TextView mCounterView;
@@ -53,10 +54,21 @@ public class CounterFragment extends Fragment {
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         try {
             mStep = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
-        } catch (Exception e) {
+            if (mStep > MAX_VALUE) {
+                mStep = 1;
+                Toast.makeText(getActivity().getApplicationContext(), R.string.step_over_limit,
+                        Toast.LENGTH_LONG).show();
+                SharedPreferences.Editor editor = mSharedPref.edit();
+                editor.putString("pref_step", "1");
+                editor.apply();
+            }
+        } catch (NumberFormatException e) {
             mStep = 1;
-            Toast.makeText(getActivity().getApplicationContext(), "Invalid value of step.",
+            Toast.makeText(getActivity().getApplicationContext(), R.string.step_overflow,
                     Toast.LENGTH_LONG).show();
+            SharedPreferences.Editor editor = mSharedPref.edit();
+            editor.putString("pref_step", "1");
+            editor.apply();
         }
         mScreenAlwaysOn = mSharedPref.getBoolean("pref_screen_dim", false);
         mVolumeButtonsActivated = mSharedPref.getBoolean("pref_volume_buttons", false);
@@ -76,24 +88,22 @@ public class CounterFragment extends Fragment {
         mCounterView.setText(mCounter.toString());
 
         mAddToggle = (ImageButton)v.findViewById(R.id.button1);
-        //addToggle.getBackground().setColorFilter(0x61616161, PorterDuff.Mode.MULTIPLY);
         mAddToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCounter.increment();
+                mAddToggle.setEnabled(mCounter.increment());
+                mSubtractToggle.setEnabled(true);
                 mCounterView.setText(mCounter.toString());
-                mSubtractToggle.setEnabled(mCounter.canDecrease());
             }
         });
 
         mSubtractToggle = (ImageButton)v.findViewById(R.id.button2);
-        //subtractToggle.getBackground().setColorFilter(0x61616161, PorterDuff.Mode.MULTIPLY);
         mSubtractToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCounter.decrement();
+                mSubtractToggle.setEnabled(mCounter.decrement());
+                mAddToggle.setEnabled(true);
                 mCounterView.setText(mCounter.toString());
-                mSubtractToggle.setEnabled(mCounter.canDecrease());
             }
         });
 
@@ -103,7 +113,7 @@ public class CounterFragment extends Fragment {
     public void resetView() {
         mCounter.reset();
         mCounterView.setText(mCounter.toString());
-        mSubtractToggle.setEnabled(mCounter.canDecrease());
+        mSubtractToggle.setEnabled(false);
     }
 
     @Override
@@ -154,10 +164,21 @@ public class CounterFragment extends Fragment {
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         try {
             mStep = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
-        } catch (Exception e) {
+            if (mStep > MAX_VALUE) {
+                mStep = 1;
+                Toast.makeText(getActivity().getApplicationContext(), R.string.step_over_limit,
+                        Toast.LENGTH_LONG).show();
+                SharedPreferences.Editor editor = mSharedPref.edit();
+                editor.putString("pref_step", "1");
+                editor.apply();
+            }
+        } catch (NumberFormatException e) {
             mStep = 1;
-            Toast.makeText(getActivity().getApplicationContext(), "Invalid value of step.",
+            Toast.makeText(getActivity().getApplicationContext(), R.string.step_overflow,
                     Toast.LENGTH_LONG).show();
+            SharedPreferences.Editor editor = mSharedPref.edit();
+            editor.putString("pref_step", "1");
+            editor.apply();
         }
         mScreenAlwaysOn = mSharedPref.getBoolean("pref_screen_dim", false);
         mVolumeButtonsActivated = mSharedPref.getBoolean
@@ -209,23 +230,20 @@ public class CounterFragment extends Fragment {
         return tmpCount;
     }
 
+    //Methods needed to let the volume buttons control the counter.
     public void incrementCounter() {
         if (mVolumeButtonsActivated) {
-            mCounter.increment();
+            mAddToggle.setEnabled(mCounter.increment());
+            mSubtractToggle.setEnabled(true);
             mCounterView.setText(mCounter.toString());
-            mSubtractToggle.setEnabled(mCounter.canDecrease());
-        } else {
-
         }
     }
 
     public void decrementCounter() {
         if (mVolumeButtonsActivated) {
-            mCounter.decrement();
+            mSubtractToggle.setEnabled(mCounter.decrement());
+            mAddToggle.setEnabled(true);
             mCounterView.setText(mCounter.toString());
-            mSubtractToggle.setEnabled(mCounter.canDecrease());
-        } else {
-
         }
     }
 }

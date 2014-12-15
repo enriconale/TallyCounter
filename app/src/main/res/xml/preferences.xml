@@ -7,7 +7,8 @@
         android:summary="@string/preference_count_description"
         android:numeric="integer"
         android:defaultValue="1"
-        android:persistent="true"/>
+        android:persistent="true"
+        android:selectAllOnFocus="true" />
 
     <CheckBoxPreference
         android:key="pref_volume_buttons"
