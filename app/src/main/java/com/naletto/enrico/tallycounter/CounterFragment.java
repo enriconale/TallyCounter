@@ -29,7 +29,7 @@ import java.io.Writer;
 public class CounterFragment extends Fragment {
 
     private static final String FILENAME = "tally.json";
-    private final int MAX_VALUE = 10000000;
+    private final int MAX_COUNTER_VALUE = 10000000;
 
     private TallyCounter mCounter;
     private TextView mCounterView;
@@ -54,7 +54,7 @@ public class CounterFragment extends Fragment {
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         try {
             mStep = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
-            if (mStep > MAX_VALUE) {
+            if (mStep > MAX_COUNTER_VALUE) {
                 mStep = 1;
                 Toast.makeText(getActivity().getApplicationContext(), R.string.step_over_limit,
                         Toast.LENGTH_LONG).show();
@@ -91,7 +91,12 @@ public class CounterFragment extends Fragment {
         mAddToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAddToggle.setEnabled(mCounter.increment());
+                if (mCounter.canIncrease()) {
+                    mCounter.increase();
+                    mAddToggle.setEnabled(true);
+                } else {
+                    mAddToggle.setEnabled(false);
+                }
                 mSubtractToggle.setEnabled(true);
                 mCounterView.setText(mCounter.toString());
             }
@@ -101,7 +106,12 @@ public class CounterFragment extends Fragment {
         mSubtractToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSubtractToggle.setEnabled(mCounter.decrement());
+                if (mCounter.canDecrease()) {
+                    mCounter.decrease();
+                    mSubtractToggle.setEnabled(true);
+                } else {
+                    mSubtractToggle.setEnabled(false);
+                }
                 mAddToggle.setEnabled(true);
                 mCounterView.setText(mCounter.toString());
             }
@@ -164,7 +174,7 @@ public class CounterFragment extends Fragment {
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         try {
             mStep = Integer.parseInt(mSharedPref.getString("pref_step", "1"));
-            if (mStep > MAX_VALUE) {
+            if (mStep > MAX_COUNTER_VALUE) {
                 mStep = 1;
                 Toast.makeText(getActivity().getApplicationContext(), R.string.step_over_limit,
                         Toast.LENGTH_LONG).show();
@@ -216,24 +226,29 @@ public class CounterFragment extends Fragment {
     }
 
     private int loadTally() {
-        int tmpCount = 0;
+        int savedCount = 0;
         try {
             JsonReader jsonReader = new JsonReader(new InputStreamReader(getActivity()
                     .openFileInput(FILENAME)));
             jsonReader.beginObject();
             if (jsonReader.nextName().equals("count")) {
-                tmpCount = jsonReader.nextInt();
+                savedCount = jsonReader.nextInt();
             }
         } catch (Exception e) {
-            return 0;
+            return savedCount;
         }
-        return tmpCount;
+        return savedCount;
     }
 
     //Methods needed to let the volume buttons control the counter.
     public void incrementCounter() {
         if (mVolumeButtonsActivated) {
-            mAddToggle.setEnabled(mCounter.increment());
+            if (mCounter.canIncrease()) {
+                mCounter.increase();
+                mAddToggle.setEnabled(true);
+            } else {
+                mAddToggle.setEnabled(false);
+            }
             mSubtractToggle.setEnabled(true);
             mCounterView.setText(mCounter.toString());
         }
@@ -241,7 +256,12 @@ public class CounterFragment extends Fragment {
 
     public void decrementCounter() {
         if (mVolumeButtonsActivated) {
-            mSubtractToggle.setEnabled(mCounter.decrement());
+            if (mCounter.canDecrease()) {
+                mCounter.decrease();
+                mSubtractToggle.setEnabled(true);
+            } else {
+                mSubtractToggle.setEnabled(false);
+            }
             mAddToggle.setEnabled(true);
             mCounterView.setText(mCounter.toString());
         }
