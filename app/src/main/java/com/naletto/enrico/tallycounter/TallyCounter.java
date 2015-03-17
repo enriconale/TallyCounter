@@ -11,7 +11,7 @@ import org.json.JSONObject;
 public class TallyCounter {
 
     private final static String JSON_COUNT = "count";
-    private final static int MAX_VALUE = 10000000;
+    private final static int MAX_COUNT_VALUE = 10000000;
 
     //Private variables
     private int mCount;
@@ -38,6 +38,25 @@ public class TallyCounter {
         if (canDecrease()) {
             mCount -= mStep;
         }
+    }
+
+
+    /**
+     * Verifies if the count of the tally counter can decrease
+     * @return True if the count of the tally counter can decrease with the current step, false
+     * otherwise
+     */
+    public boolean canDecrease() {
+        return (mCount >= mStep);
+    }
+
+    /**
+     * Verifies if the count of the tally counter can increase
+     * @return True if the count of the tally counter can increase with the current step, false
+     * otherwise
+     */
+    public boolean canIncrease() {
+        return ((mCount + mStep) <= MAX_COUNT_VALUE);
     }
 
     /**
@@ -85,23 +104,4 @@ public class TallyCounter {
         json.put(JSON_COUNT, mCount);
         return json;
     }
-
-    /**
-     * Verifies if the count of the tally counter can decrease
-     * @return True if the count of the tally counter can decrease with the current step, false
-     * otherwise
-     */
-    public boolean canDecrease() {
-        return (mCount >= mStep);
-    }
-
-    /**
-     * Verifies if the count of the tally counter can increase
-     * @return True if the count of the tally counter can increase with the current step, false
-     * otherwise
-     */
-    public boolean canIncrease() {
-        return ((mCount + mStep) <= MAX_VALUE);
-    }
-
 }
